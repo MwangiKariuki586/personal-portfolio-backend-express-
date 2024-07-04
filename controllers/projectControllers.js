@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 export const getProjects = (req, res) => {
-  const q = "SELECT * FROM projects ORDER BY id";
+  const q = "SELECT * FROM projects ORDER BY id DESC";
   db.query(q, (err, data) => {
     if (err) return res.status(500).json({ error: err.message });
     if (data.length === 0)
@@ -50,11 +50,9 @@ export const addProject = (req, res) => {
         (err, duplicateGithubProjects) => {
           if (err) return res.status(500).json({ error: err.message });
           if (duplicateGithubProjects.length > 0) {
-            return res
-              .status(400)
-              .json({
-                message: "Project with this GitHub link already exists",
-              });
+            return res.status(400).json({
+              message: "Project with this GitHub link already exists",
+            });
           }
 
           // Check for duplicate demo link
@@ -66,11 +64,9 @@ export const addProject = (req, res) => {
             (err, duplicateDemoProjects) => {
               if (err) return res.status(500).json({ error: err.message });
               if (duplicateDemoProjects.length > 0) {
-                return res
-                  .status(400)
-                  .json({
-                    message: "Project with this demo link already exists",
-                  });
+                return res.status(400).json({
+                  message: "Project with this demo link already exists",
+                });
               }
 
               // If no duplicates found, proceed with insertion
@@ -80,12 +76,10 @@ export const addProject = (req, res) => {
 
               db.query(insertQuery, values, (err, data) => {
                 if (err) return res.status(500).json({ error: err.message });
-                return res
-                  .status(201)
-                  .json({
-                    message: "Project added successfully",
-                    projectId: data.insertId,
-                  });
+                return res.status(201).json({
+                  message: "Project added successfully",
+                  projectId: data.insertId,
+                });
               });
             }
           );
@@ -128,11 +122,9 @@ export const updateProject = (req, res) => {
           (err, duplicateGithubProjects) => {
             if (err) return res.status(500).json({ error: err.message });
             if (duplicateGithubProjects.length > 0) {
-              return res
-                .status(400)
-                .json({
-                  message: "Project with this GitHub link already exists",
-                });
+              return res.status(400).json({
+                message: "Project with this GitHub link already exists",
+              });
             }
 
             // Check for duplicate demo link
@@ -144,11 +136,9 @@ export const updateProject = (req, res) => {
               (err, duplicateDemoProjects) => {
                 if (err) return res.status(500).json({ error: err.message });
                 if (duplicateDemoProjects.length > 0) {
-                  return res
-                    .status(400)
-                    .json({
-                      message: "Project with this demo link already exists",
-                    });
+                  return res.status(400).json({
+                    message: "Project with this demo link already exists",
+                  });
                 }
 
                 // If no duplicates found, proceed with update
