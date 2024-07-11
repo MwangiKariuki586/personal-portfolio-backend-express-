@@ -30,6 +30,7 @@ export const addAbout = (req, res) => {
       name: "second_image",
       maxCount: 1,
     },
+    { name: "resume", maxCount: 1 },
   ])(req, res, (err) => {
     if (err) return res.status(500).json({ error: err.message });
 
@@ -43,39 +44,45 @@ export const addAbout = (req, res) => {
     const second_image = req.files["second_image"]
       ? req.files["second_image"][0].path
       : null;
+    const resume = req.files["resume"] ? req.files["resume"][0].path : null;
     const greetings = req.body.greetings;
     const full_name = req.body.full_name;
     const title = req.body.title;
     const linkedin = req.body.linkedin;
     const github = req.body.github;
     const years_of_experience = req.body.years_of_experience;
+    const description = req.body.description;
     const course_studied = req.body.course_studied;
 
     if (
       !first_image ||
       !second_image ||
+      !resume ||
       !greetings ||
       !full_name ||
       !title ||
       !linkedin ||
       !github ||
       !years_of_experience ||
+      !description ||
       !course_studied
     ) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
     const q =
-      "INSERT INTO about (`greetings`,`full_name`,`title`,`first_image`,`second_image`,`linkedin`,`github`,`years_of_experience`,`course_studied`) VALUES(?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO about (`greetings`,`full_name`,`title`,`first_image`,`second_image`,`resume`,`linkedin`,`github`,`years_of_experience`,`description`,`course_studied`) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
     const values = [
       greetings,
       full_name,
       title,
       first_image,
       second_image,
+      resume,
       linkedin,
       github,
       years_of_experience,
+      description,
       course_studied,
     ];
 
